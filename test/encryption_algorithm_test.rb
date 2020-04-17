@@ -16,11 +16,11 @@ class EncryptionAlgorithmTest < MiniTest::Test
     # return hash where a-d key points to correct digits
 
     expected = {
-      a_key: 02,
-      b_key: 27,
-      c_key: 71,
-      d_key: 15
+      a_key: [0,2],
+      b_key: [2,7],
+      c_key: [7,1],
+      d_key: [1,5]
     }
-    assert_equal expected, @enigma_machine.generate_keys 
+    assert_equal expected, @enigma_machine.generate_keys
   end
 end
