@@ -1,6 +1,6 @@
 class EncryptionAlgorithm
 
-  def initialize(argument)
-    @argument = argument
+  def initialize
+  
   end
 end
