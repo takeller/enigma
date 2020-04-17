@@ -23,4 +23,13 @@ class EncryptionAlgorithmTest < MiniTest::Test
     }
     assert_equal expected, @enigma_machine.generate_keys
   end
+
+  def test_random_number_generator
+    random_key = @enigma_machine.random_number_generator
+    assert_instance_of Array, random_key
+    assert_equal 5, random_key.length 
+    random_key.each do |digit|
+      assert_instance_of Integer, digit
+    end
+  end
 end
