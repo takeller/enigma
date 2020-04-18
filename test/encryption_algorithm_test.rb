@@ -102,4 +102,25 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, alphabet)
   end
 
+  def test_format_keys
+    expected = {
+      a_key: [0,2],
+      b_key: [2,7],
+      c_key: [7,1],
+      d_key: [1,5]
+    }
+
+    assert_equal expected, @enigma_machine.format_keys("02715")
+  end
+
+  def test_format_offsets
+    expected = {
+      a_offset: 1,
+      b_offset: 0,
+      c_offset: 2,
+      d_offset: 5
+    }
+    assert_equal expected, @enigma_machine.format_offsets("040895")
+  end
+
 end
