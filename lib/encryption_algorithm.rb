@@ -39,11 +39,8 @@ class EncryptionAlgorithm
     }
   end
 
-  def calculate_shifts
+  def calculate_shifts(keys, offsets)
     # a key + a offset
-    keys = generate_keys
-    offsets = generate_offsets
-
     {
       a_shift: keys[:a_key].join.to_i + offsets[:a_offset],
       b_shift: keys[:b_key].join.to_i + offsets[:b_offset],
@@ -54,8 +51,6 @@ class EncryptionAlgorithm
 
   # Break message into chunks of 4 characters
   def format_message(message)
-    # downcase message
-    # break into chunks of 4 characters
     chunked_message = []
     lowercase_message = message.downcase
     lowercase_message.chars.each_slice(4) do |chunk|
@@ -64,11 +59,25 @@ class EncryptionAlgorithm
     chunked_message
   end
 
-  # def encrypt_message(message, keys, offsets)
-  #   alphabet = generate_alphabet
-  #
-  #
-  # end
+  # shift the 4 letter chunk
+  def shift_chunk(message_chunk, shifts, alphabet)
+    shifts = [shifts[:a_shift], shifts[:b_shift], shifts[:c_shift], shifts[:d_shift]]
+    message_chunk.map.with_index do |char, chunk_index|
+      alphabet_index = alphabet.index(char)
+      new_character = alphabet.rotate(shifts[chunk_index])[alphabet_index]
+      message_chunk[chunk_index] = new_character
+    end
+  end
+
+  def encrypt_message(message, keys = generate_keys, offsets = generate_offsets)
+    alphabet = generate_alphabet
+    final_shifts = calculate_shifts(keys, offsets)
+    formated_message = format_message(message)
+    shifted_message = formated_message.map do |message_chunk|
+      shift_chunk(message_chunk, final_shifts, alphabet)
+    end
+    encrypted_message = shifted_message.flatten.join()
+  end
 
   def generate_alphabet
     ("a".."z").to_a << " "

@@ -68,7 +68,7 @@ class EncryptionAlgorithmTest < MiniTest::Test
     @enigma_machine.stubs(:generate_keys).returns(keys)
     @enigma_machine.stubs(:generate_offsets).returns(offsets)
 
-    assert_equal expected, @enigma_machine.calculate_shifts
+    assert_equal expected, @enigma_machine.calculate_shifts(keys, offsets)
   end
 
   def test_encrypt_message
@@ -97,7 +97,7 @@ class EncryptionAlgorithmTest < MiniTest::Test
       d_shift: 20
     }
     alphabet = ("a".."z").to_a << " "
-    
+
     assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, alphabet)
     assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, alphabet)
   end
