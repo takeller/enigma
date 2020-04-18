@@ -16,7 +16,7 @@ class EncryptionAlgorithmTest < MiniTest::Test
     expected =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
     assert_equal expected, @enigma_machine.alphabet
     assert_equal "hello world", @enigma_machine.message
-    assert_equal "02715", @enigma_machine.key
+    assert_equal "02715", @enigma_machine.encryption_key
     assert_equal "040895", @enigma_machine.date
   end
 

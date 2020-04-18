@@ -2,16 +2,16 @@ require 'date'
 require 'pry'
 class EncryptionAlgorithm
 
-  attr_reader :message, :key, :date, :alphabet 
-  def initialize(message, key = nil, date = nil)
+  attr_reader :message, :encryption_key, :date, :alphabet
+  def initialize(message, encryption_key = nil, date = nil)
     @message = message
-    @key = key
+    @encryption_key = encryption_key
     @date = date
     @alphabet = ("a".."z").to_a << " "
   end
 
   def random_number_generator
-    random_number = rand(10 ** 5).to_s
+    rand(10 ** 5).to_s
   end
 
   def generate_keys
@@ -19,27 +19,28 @@ class EncryptionAlgorithm
   end
 
   def format_keys(key)
-    encryption_key = convert_key_string_to_array(key)
+    key = convert_key_string_to_array(key)
     {
-      a_key: encryption_key[0,2],
-      b_key: encryption_key[1,2],
-      c_key: encryption_key[2,2],
-      d_key: encryption_key[3,2]
+      a_key: key[0,2],
+      b_key: key[1,2],
+      c_key: key[2,2],
+      d_key: key[3,2]
     }
   end
 
   def convert_key_string_to_array(key)
-    encryption_key = []
-    key.each_char { |digit| encryption_key << digit.to_i  }
-    until encryption_key.length == 5
-      encryption_key.unshift(0)
+    modified_key = []
+    key.each_char { |digit| modified_key << digit.to_i  }
+    until modified_key.length == 5
+      modified_key.unshift(0)
     end
-    encryption_key
+    @encryption_key = modified_key.join() if @encryption_key == nil
+    modified_key
   end
 
   def generate_offsets
-    date = Date::today.strftime("%d%m%y")
-    format_offsets(date)
+    @date = Date::today.strftime("%d%m%y")
+    format_offsets(@date)
   end
 
   def format_offsets(date)
