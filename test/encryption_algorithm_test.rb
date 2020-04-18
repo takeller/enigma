@@ -84,4 +84,9 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal expected, @enigma_machine.generate_alphabet
   end
 
+  def test_format_message
+    expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+    assert_equal expected, @enigma_machine.format_message("hello world")
+  end
+
 end
