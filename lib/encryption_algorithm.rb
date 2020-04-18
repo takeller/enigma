@@ -97,22 +97,23 @@ class EncryptionAlgorithm
     shifted_message = formated_message.map do |message_chunk|
       shift_chunk(message_chunk, final_shifts, alphabet, :encrypt)
     end
-    encrypted_message = shifted_message.flatten.join()
+    shifted_message.flatten.join()
   end
 
-  # def decrypt_message(encrypted_message, key, date = nil)
-  #   keys = format_keys(key)
-  #   offsets = format_offsets(date) if date != nil
-  #   offsets = generate_offsets if date == nil
-  #   alphabet = generate_alphabet
-  #
-  #   final_shifts = calculate_shifts(keys, offsets)
-  #   formated_message = format_message(encrypt_message)
-  #
-  #   shifted_message = formated_message.map do |message_chunk|
-  #     shift_chunk(message_chunk, final_shifts, alphabet, :decrypt)
-  #   end
-  # end
+  def decrypt_message(encrypted_message, key, date = nil)
+    keys = format_keys(key)
+    offsets = format_offsets(date) if date != nil
+    offsets = generate_offsets if date == nil
+    alphabet = generate_alphabet
+
+    final_shifts = calculate_shifts(keys, offsets)
+    formated_message = format_message(encrypted_message)
+
+    shifted_message = formated_message.map do |message_chunk|
+      shift_chunk(message_chunk, final_shifts, alphabet, :decrypt)
+    end
+    shifted_message.flatten.join()
+  end
 
 
   def generate_alphabet
