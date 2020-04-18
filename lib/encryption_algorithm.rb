@@ -34,7 +34,7 @@ class EncryptionAlgorithm
     until modified_key.length == 5
       modified_key.unshift(0)
     end
-    set_key(modified_key) if @encryption_key == nil 
+    set_key(modified_key) if @encryption_key == nil
     modified_key
   end
 
@@ -92,20 +92,6 @@ class EncryptionAlgorithm
       end
       message_chunk[chunk_index] = new_character
     end
-  end
-
-  def decrypt_message(encrypted_message, key, date = nil)
-    keys = format_keys(key)
-    offsets = format_offsets(date) if date != nil
-    offsets = generate_offsets if date == nil
-
-    final_shifts = calculate_shifts(keys, offsets)
-    formated_message = format_message(encrypted_message)
-
-    shifted_message = formated_message.map do |message_chunk|
-      shift_chunk(message_chunk, final_shifts, :decrypt)
-    end
-    shifted_message.flatten.join()
   end
 
 end

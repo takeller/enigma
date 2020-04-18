@@ -8,7 +8,7 @@ class Encrypt < EncryptionAlgorithm
     offsets = generate_offsets if @date == nil
     keys = format_keys(@encryption_key) if @encryption_key != nil
     offsets = format_offsets(date) if @date != nil
-    # binding.pry
+
     final_shifts = calculate_shifts(keys, offsets)
     formated_message = format_message(@message)
     shifted_message = formated_message.map do |message_chunk|
