@@ -45,4 +45,12 @@ class EncryptionAlgorithmTest < MiniTest::Test
     }
     assert_equal expected, @enigma_machine.generate_offsets("040895")
   end
+
+  def test_encrypt_message
+    # keys a: 02, b: 27, c: 71, d: 15 || offsets a: 1, b: 0, c: 2, d: 5
+    # Final shifts -> a: 3, b: 27, c: 73, d: 20
+    # Given "hello world" expected "keder ohuluw"
+
+    assert_equal "keder ohuluw", @enigma_machine.encrypt_message("hello world")
+  end
 end
