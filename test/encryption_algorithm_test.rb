@@ -129,4 +129,10 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal expected, @enigma_machine.convert_key_string_to_array("02715")
   end
 
+  def test_set_key
+    enigma = EncryptionAlgorithm.new("hello world")
+    enigma.set_key([0,1,2,3,4])
+    assert_equal "01234", enigma.encryption_key
+  end
+
 end

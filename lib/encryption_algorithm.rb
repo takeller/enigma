@@ -34,8 +34,12 @@ class EncryptionAlgorithm
     until modified_key.length == 5
       modified_key.unshift(0)
     end
-    @encryption_key = modified_key.join() if @encryption_key == nil
+    set_key(modified_key) if @encryption_key == nil 
     modified_key
+  end
+
+  def set_key(key)
+    @encryption_key = key.join()
   end
 
   def generate_offsets
@@ -48,7 +52,7 @@ class EncryptionAlgorithm
     date_squared = (date.to_i ** 2).to_s
     date_squared[-4..-1].each_char { |digit| last4_digits << digit.to_i  }
 
-    offsets = {
+    {
       a_offset: last4_digits[0],
       b_offset: last4_digits[1],
       c_offset: last4_digits[2],
