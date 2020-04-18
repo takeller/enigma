@@ -16,7 +16,7 @@ class EncryptionAlgorithm
     encryption_key
   end
 
-  def generate_keys
+  def generate_keys(key = nil)
     encryption_key = random_number_generator
     {
       a_key: encryption_key[0,2],
@@ -24,6 +24,29 @@ class EncryptionAlgorithm
       c_key: encryption_key[2,2],
       d_key: encryption_key[3,2]
     }
+  end
+
+  def format_keys(key)
+    encryption_key = []
+    key.each_char { |digit| encryption_key << digit.to_i  }
+    until encryption_key.length == 5
+      encryption_key.unshift(0)
+    end
+    {
+      a_key: encryption_key[0,2],
+      b_key: encryption_key[1,2],
+      c_key: encryption_key[2,2],
+      d_key: encryption_key[3,2]
+    }
+  end
+
+  def convert_key_string_to_array(key)
+    encryption_key = []
+    key.each_char { |digit| encryption_key << digit.to_i  }
+    until encryption_key.length == 5
+      encryption_key.unshift(0)
+    end
+    encryption_key
   end
 
   def generate_offsets(date = Date::today.strftime("%d%m%y"))
@@ -69,15 +92,20 @@ class EncryptionAlgorithm
     end
   end
 
-  def encrypt_message(message, keys = generate_keys, offsets = generate_offsets)
-    alphabet = generate_alphabet
-    final_shifts = calculate_shifts(keys, offsets)
-    formated_message = format_message(message)
-    shifted_message = formated_message.map do |message_chunk|
-      shift_chunk(message_chunk, final_shifts, alphabet)
-    end
-    encrypted_message = shifted_message.flatten.join()
-  end
+  # def encrypt_message(message, keys = nil, offsets = nil)
+  #   keys = generate_keys if keys == nil
+  #   offsets = generate_offsets if offsets == nil
+  #   keys = format_keys if keys != nil
+  #   offsets = format_offsets if offsets != nil
+  #
+  #   alphabet = generate_alphabet
+  #   final_shifts = calculate_shifts(keys, offsets)
+  #   formated_message = format_message(message)
+  #   shifted_message = formated_message.map do |message_chunk|
+  #     shift_chunk(message_chunk, final_shifts, alphabet)
+  #   end
+  #   encrypted_message = shifted_message.flatten.join()
+  # end
 
   def generate_alphabet
     ("a".."z").to_a << " "

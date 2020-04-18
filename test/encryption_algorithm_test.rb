@@ -125,7 +125,7 @@ class EncryptionAlgorithmTest < MiniTest::Test
 
   def test_convert_key_string_to_array
     expected = [0,2,7,1,5]
-    assert_equal expected, @enigma_machine.convert_key_string_to_array
+    assert_equal expected, @enigma_machine.convert_key_string_to_array("02715")
   end
 
 end
