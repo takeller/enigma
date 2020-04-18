@@ -89,4 +89,16 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal expected, @enigma_machine.format_message("HeLlo WorLd")
   end
 
+  def test_shift_chunk
+    shifts = {
+      a_shift: 3,
+      b_shift: 27,
+      c_shift: 73,
+      d_shift: 20
+    }
+    @enigma_machine.stubs(:calculate_shifts).returns(shifts)
+    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"])
+    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"])
+  end
+
 end
