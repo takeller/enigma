@@ -46,6 +46,31 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal expected, @enigma_machine.generate_offsets("040895")
   end
 
+  def test_calculate_shifts
+    keys = {
+          a_key: [0,2],
+          b_key: [2,7],
+          c_key: [7,1],
+          d_key: [1,5]
+    }
+    offsets = {
+      a_offset: 1,
+      b_offset: 0,
+      c_offset: 2,
+      d_offset: 5
+    }
+    expected = {
+      a_shift: 3,
+      b_shift: 27,
+      c_shift: 73,
+      d_shift: 20
+    }
+    @enigma_machine.stubs(:generate_keys).returns(keys)
+    @enigma_machine.stubs(:generate_offsets).returns(offsets)
+
+    assert_equal expected, @enigma_machine.calculate_shifts 
+  end
+
   def test_encrypt_message
     # keys a: 02, b: 27, c: 71, d: 15 || offsets a: 1, b: 0, c: 2, d: 5
     # Final shifts -> a: 3, b: 27, c: 73, d: 20
@@ -58,4 +83,5 @@ class EncryptionAlgorithmTest < MiniTest::Test
     expected =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
     assert_equal expected, @enigma_machine.generate_alphabet
   end
+
 end
