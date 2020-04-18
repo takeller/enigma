@@ -123,4 +123,9 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal expected, @enigma_machine.format_offsets("040895")
   end
 
+  def test_convert_key_string_to_array
+    expected = [0,2,7,1,5]
+    assert_equal expected, @enigma_machine.convert_key_string_to_array
+  end
+
 end
