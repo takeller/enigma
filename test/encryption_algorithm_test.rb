@@ -48,10 +48,10 @@ class EncryptionAlgorithmTest < MiniTest::Test
 
   def test_calculate_shifts
     keys = {
-          a_key: [0,2],
-          b_key: [2,7],
-          c_key: [7,1],
-          d_key: [1,5]
+      a_key: [0,2],
+      b_key: [2,7],
+      c_key: [7,1],
+      d_key: [1,5]
     }
     offsets = {
       a_offset: 1,
@@ -68,7 +68,7 @@ class EncryptionAlgorithmTest < MiniTest::Test
     @enigma_machine.stubs(:generate_keys).returns(keys)
     @enigma_machine.stubs(:generate_offsets).returns(offsets)
 
-    assert_equal expected, @enigma_machine.calculate_shifts 
+    assert_equal expected, @enigma_machine.calculate_shifts
   end
 
   def test_encrypt_message

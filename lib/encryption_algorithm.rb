@@ -39,7 +39,22 @@ class EncryptionAlgorithm
     }
   end
 
+  def calculate_shifts
+    # a key + a offset
+    keys = generate_keys
+    offsets = generate_offsets
+
+    {
+      a_shift: keys[:a_key].join.to_i + offsets[:a_offset],
+      b_shift: keys[:b_key].join.to_i + offsets[:b_offset],
+      c_shift: keys[:c_key].join.to_i + offsets[:c_offset],
+      d_shift: keys[:d_key].join.to_i + offsets[:d_offset]
+    }
+  end
+
+
   # def encrypt_message(message, keys, offsets)
+  #   alphabet = generate_alphabet
   #
   #
   # end
