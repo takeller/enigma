@@ -1,6 +1,5 @@
-class Encrypt
+require './lib/encryption_algorithm'
 
-  def initialize(argument)
-    @argument = argument
-  end
+class Encrypt < EncryptionAlgorithm
+
 end

@@ -5,11 +5,17 @@ require './lib/encryption_algorithm'
 
 class EncryptionAlgorithmTest < MiniTest::Test
   def setup
-    @enigma_machine = EncryptionAlgorithm.new
+    @enigma_machine = EncryptionAlgorithm.new("hello world", "02715", "040895")
   end
 
   def test_it_exists
     assert_instance_of EncryptionAlgorithm, @enigma_machine
+  end
+
+  def test_it_has_readable_attributes
+    assert_equal "hello world", @enigma_machine.message
+    assert_equal "02715", @enigma_machine.key
+    assert_equal "040895", @enigma_machine.date
   end
 
   def test_it_can_generate_keys

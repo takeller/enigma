@@ -2,8 +2,11 @@ require 'date'
 require 'pry'
 class EncryptionAlgorithm
 
-  def initialize
-
+  attr_reader :message, :key, :date 
+  def initialize(message, key = nil, date = nil)
+    @message = message
+    @key = key
+    @date = date
   end
 
   def random_number_generator
