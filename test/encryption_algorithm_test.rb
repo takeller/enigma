@@ -118,8 +118,11 @@ class EncryptionAlgorithmTest < MiniTest::Test
     }
     alphabet = ("a".."z").to_a << " "
 
-    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, alphabet)
-    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, alphabet)
+    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, alphabet, :encrypt)
+    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, alphabet, :encrypt)
+
+    assert_equal ["h", "e", "l", "l"], @enigma_machine.shift_chunk(["k", "e", "d", "e"], shifts, alphabet, :decrypt)
+    assert_equal ["o", " ", "w", "o"], @enigma_machine.shift_chunk(["r", " ", "o", "h"], shifts, alphabet, :decrypt)
   end
 
   def test_format_keys
