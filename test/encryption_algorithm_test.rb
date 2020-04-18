@@ -91,6 +91,14 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal "keder ohulw", @enigma_machine.encrypt_message("hello world")
   end
 
+  def test_decrypt_message
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+
+    assert_equal "hello world", @enigma_machine.decrypt_message("keder ohulw", "02715", "040895")
+    assert_equal "hello world", @enigma_machine.decrypt_message("keder ohulw", "02715")
+  end
+
   def test_generate_alphabet
     expected =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
     assert_equal expected, @enigma_machine.generate_alphabet
