@@ -36,13 +36,13 @@ class EncryptionAlgorithmTest < MiniTest::Test
 
   def test_generate_offsets
     # ddmmyy, August 4, 1995 -> 040895
-    
+
     expected = {
       a_offset: 1,
       b_offset: 0,
       c_offset: 2,
       d_offset: 5
     }
-    assert_equal expected, @enigma_machine.generate_offsets
+    assert_equal expected, @enigma_machine.generate_offsets("040895")
   end
 end

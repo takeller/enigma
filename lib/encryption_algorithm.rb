@@ -1,3 +1,5 @@
+require 'date'
+require 'pry'
 class EncryptionAlgorithm
 
   def initialize
@@ -21,6 +23,19 @@ class EncryptionAlgorithm
       b_key: encryption_key[1,2],
       c_key: encryption_key[2,2],
       d_key: encryption_key[3,2]
+    }
+  end
+
+  def generate_offsets(date = Date::today.strftime("%d%m%y"))
+    last4_digits = []
+    date_squared = (date.to_i ** 2).to_s
+    date_squared[-4..-1].each_char { |digit| last4_digits << digit.to_i  }
+
+    offsets = {
+      a_offset: last4_digits[0],
+      b_offset: last4_digits[1],
+      c_offset: last4_digits[2],
+      d_offset: last4_digits[3]
     }
   end
 end
