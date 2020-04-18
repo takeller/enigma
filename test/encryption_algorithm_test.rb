@@ -96,9 +96,10 @@ class EncryptionAlgorithmTest < MiniTest::Test
       c_shift: 73,
       d_shift: 20
     }
-    @enigma_machine.stubs(:calculate_shifts).returns(shifts)
-    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"])
-    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"])
+    alphabet = ("a".."z").to_a << " "
+    
+    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, alphabet)
+    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, alphabet)
   end
 
 end
