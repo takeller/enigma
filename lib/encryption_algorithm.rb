@@ -72,11 +72,15 @@ class EncryptionAlgorithm
   end
 
   # shift the 4 letter chunk
-  def shift_chunk(message_chunk, shifts, alphabet)
+  def shift_chunk(message_chunk, shifts, alphabet, encrypt_or_decrypt)
     shifts = [shifts[:a_shift], shifts[:b_shift], shifts[:c_shift], shifts[:d_shift]]
     message_chunk.map.with_index do |char, chunk_index|
       alphabet_index = alphabet.index(char)
-      new_character = alphabet.rotate(shifts[chunk_index])[alphabet_index]
+      if encrypt_or_decrypt == :encrypt
+        new_character = alphabet.rotate(shifts[chunk_index])[alphabet_index]
+      elsif encrypt_or_decrypt == :decrypt
+        new_character = alphabet.rotate(-shifts[chunk_index])[alphabet_index]
+      end
       message_chunk[chunk_index] = new_character
     end
   end
@@ -91,10 +95,25 @@ class EncryptionAlgorithm
     final_shifts = calculate_shifts(keys, offsets)
     formated_message = format_message(message)
     shifted_message = formated_message.map do |message_chunk|
-      shift_chunk(message_chunk, final_shifts, alphabet)
+      shift_chunk(message_chunk, final_shifts, alphabet, :encrypt)
     end
     encrypted_message = shifted_message.flatten.join()
   end
+
+  # def decrypt_message(encrypted_message, key, date = nil)
+  #   keys = format_keys(key)
+  #   offsets = format_offsets(date) if date != nil
+  #   offsets = generate_offsets if date == nil
+  #   alphabet = generate_alphabet
+  #
+  #   final_shifts = calculate_shifts(keys, offsets)
+  #   formated_message = format_message(encrypt_message)
+  #
+  #   shifted_message = formated_message.map do |message_chunk|
+  #     shift_chunk(message_chunk, final_shifts, alphabet, :decrypt)
+  #   end
+  # end
+
 
   def generate_alphabet
     ("a".."z").to_a << " "
