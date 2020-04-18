@@ -16,7 +16,7 @@ class EncryptionAlgorithm
 
   def generate_keys
     encryption_key = random_number_generator
-    keys = {
+    {
       a_key: encryption_key[0,2],
       b_key: encryption_key[1,2],
       c_key: encryption_key[2,2],
