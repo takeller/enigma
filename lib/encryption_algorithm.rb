@@ -52,6 +52,17 @@ class EncryptionAlgorithm
     }
   end
 
+  # Break message into chunks of 4 characters
+  def format_message(message)
+    # downcase message
+    # break into chunks of 4 characters
+    chunked_message = []
+    lowercase_message = message.downcase
+    lowercase_message.chars.each_slice(4) do |chunk|
+      chunked_message << chunk
+    end
+    chunked_message
+  end
 
   # def encrypt_message(message, keys, offsets)
   #   alphabet = generate_alphabet
