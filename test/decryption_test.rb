@@ -1,18 +1,18 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'mocha/minitest'
-require './lib/decrypt'
+require './lib/decryption'
 
-class DecryptTest < MiniTest::Test
+class DecryptionTest < MiniTest::Test
 
   def setup
-    @decryptor = Decrypt.new("keder ohulw", "02715", "040895")
-    @decryptor_defaults = Decrypt.new("keder ohulw", "02715")
+    @decryptor = Decryption.new("keder ohulw", "02715", "040895")
+    @decryptor_defaults = Decryption.new("keder ohulw", "02715")
   end
 
   def test_it_exists
-    assert_instance_of Decrypt, @decryptor
-    assert_instance_of Decrypt, @decryptor_defaults
+    assert_instance_of Decryption, @decryptor
+    assert_instance_of Decryption, @decryptor_defaults
   end
 
   def test_it_has_readable_attributes

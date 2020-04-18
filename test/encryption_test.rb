@@ -1,18 +1,18 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'mocha/minitest'
-require './lib/encrypt'
+require './lib/encryption'
 
-class EncryptTest < MiniTest::Test
+class EncryptionTest < MiniTest::Test
 
   def setup
-    @encryptor = Encrypt.new("hello world", "02715", "040895")
-    @encryptor_defaults = Encrypt.new("hello world")
+    @encryptor = Encryption.new("hello world", "02715", "040895")
+    @encryptor_defaults = Encryption.new("hello world")
   end
 
   def test_it_exists
-    assert_instance_of Encrypt, @encryptor
-    assert_instance_of Encrypt, @encryptor_defaults
+    assert_instance_of Encryption, @encryptor
+    assert_instance_of Encryption, @encryptor_defaults
   end
 
   def test_it_has_readable_attributes

@@ -1,6 +1,6 @@
 require './lib/encryption_algorithm'
 
-class Decrypt < EncryptionAlgorithm
+class Decryption < EncryptionAlgorithm
 
 
   def decrypt_message
