@@ -2,11 +2,12 @@ require 'date'
 require 'pry'
 class EncryptionAlgorithm
 
-  attr_reader :message, :key, :date
+  attr_reader :message, :key, :date, :alphabet 
   def initialize(message, key = nil, date = nil)
     @message = message
     @key = key
     @date = date
+    @alphabet = ("a".."z").to_a << " "
   end
 
   def random_number_generator
@@ -75,14 +76,14 @@ class EncryptionAlgorithm
   end
 
   # shift the 4 letter chunk
-  def shift_chunk(message_chunk, shifts, alphabet, encrypt_or_decrypt)
+  def shift_chunk(message_chunk, shifts, encrypt_or_decrypt)
     shifts = [shifts[:a_shift], shifts[:b_shift], shifts[:c_shift], shifts[:d_shift]]
     message_chunk.map.with_index do |char, chunk_index|
-      alphabet_index = alphabet.index(char)
+      alphabet_index = @alphabet.index(char)
       if encrypt_or_decrypt == :encrypt
-        new_character = alphabet.rotate(shifts[chunk_index])[alphabet_index]
+        new_character = @alphabet.rotate(shifts[chunk_index])[alphabet_index]
       elsif encrypt_or_decrypt == :decrypt
-        new_character = alphabet.rotate(-shifts[chunk_index])[alphabet_index]
+        new_character = @alphabet.rotate(-shifts[chunk_index])[alphabet_index]
       end
       message_chunk[chunk_index] = new_character
     end
@@ -92,19 +93,14 @@ class EncryptionAlgorithm
     keys = format_keys(key)
     offsets = format_offsets(date) if date != nil
     offsets = generate_offsets if date == nil
-    alphabet = generate_alphabet
 
     final_shifts = calculate_shifts(keys, offsets)
     formated_message = format_message(encrypted_message)
 
     shifted_message = formated_message.map do |message_chunk|
-      shift_chunk(message_chunk, final_shifts, alphabet, :decrypt)
+      shift_chunk(message_chunk, final_shifts, :decrypt)
     end
     shifted_message.flatten.join()
   end
 
-
-  def generate_alphabet
-    ("a".."z").to_a << " "
-  end
 end

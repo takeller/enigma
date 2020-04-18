@@ -13,6 +13,8 @@ class EncryptionAlgorithmTest < MiniTest::Test
   end
 
   def test_it_has_readable_attributes
+    expected =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
+    assert_equal expected, @enigma_machine.alphabet
     assert_equal "hello world", @enigma_machine.message
     assert_equal "02715", @enigma_machine.key
     assert_equal "040895", @enigma_machine.date
@@ -81,11 +83,6 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal "hello world", @enigma_machine.decrypt_message("keder ohulw", "02715")
   end
 
-  def test_generate_alphabet
-    expected =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
-    assert_equal expected, @enigma_machine.generate_alphabet
-  end
-
   def test_format_message
     expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
     assert_equal expected, @enigma_machine.format_message("HeLlo WorLd")
@@ -98,13 +95,12 @@ class EncryptionAlgorithmTest < MiniTest::Test
       c_shift: 73,
       d_shift: 20
     }
-    alphabet = ("a".."z").to_a << " "
 
-    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, alphabet, :encrypt)
-    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, alphabet, :encrypt)
+    assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, :encrypt)
+    assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, :encrypt)
 
-    assert_equal ["h", "e", "l", "l"], @enigma_machine.shift_chunk(["k", "e", "d", "e"], shifts, alphabet, :decrypt)
-    assert_equal ["o", " ", "w", "o"], @enigma_machine.shift_chunk(["r", " ", "o", "h"], shifts, alphabet, :decrypt)
+    assert_equal ["h", "e", "l", "l"], @enigma_machine.shift_chunk(["k", "e", "d", "e"], shifts, :decrypt)
+    assert_equal ["o", " ", "w", "o"], @enigma_machine.shift_chunk(["r", " ", "o", "h"], shifts, :decrypt)
   end
 
   def test_format_keys
