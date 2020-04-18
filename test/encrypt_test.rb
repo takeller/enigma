@@ -21,8 +21,8 @@ class EncryptTest < MiniTest::Test
     assert_equal "040895", @encryptor.date
 
     assert_equal "hello world", @encryptor_defaults.message
-    assert_equal nil, @encryptor_defaults.key
-    assert_equal nil, @encryptor_defaults.date
+    assert_nil @encryptor_defaults.key
+    assert_nil @encryptor_defaults.date
   end
 
   def test_encrypt_message
@@ -41,11 +41,18 @@ class EncryptTest < MiniTest::Test
       c_offset: 2,
       d_offset: 5
     }
-    @enigma_machine.stubs(:generate_keys).returns(keys)
-    @enigma_machine.stubs(:generate_offsets).returns(offsets)
+    @encryptor.stubs(:generate_keys).returns(keys)
+    @encryptor.stubs(:generate_offsets).returns(offsets)
 
-    assert_equal "keder ohulw", @enigma_machine.encrypt_message("hello world", "02715", "040895")
+    assert_equal "keder ohulw", @encryptor.encrypt_message
 
-    assert_equal "keder ohulw", @enigma_machine.encrypt_message("hello world")
+    assert_equal "keder ohulw", @encryptor.encrypt_message
+
+    @encryptor_defaults.stubs(:generate_keys).returns(keys)
+    @encryptor_defaults.stubs(:generate_offsets).returns(offsets)
+
+    assert_equal "keder ohulw", @encryptor_defaults.encrypt_message
+
+    assert_equal "keder ohulw", @encryptor_defaults.encrypt_message
   end
 end
