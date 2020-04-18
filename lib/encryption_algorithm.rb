@@ -33,7 +33,12 @@ class EncryptionAlgorithm
     encryption_key
   end
 
-  def generate_offsets(date = Date::today.strftime("%d%m%y"))
+  def generate_offsets
+    date = Date::today.strftime("%d%m%y")
+    format_offsets(date)
+  end
+
+  def format_offsets(date)
     last4_digits = []
     date_squared = (date.to_i ** 2).to_s
     date_squared[-4..-1].each_char { |digit| last4_digits << digit.to_i  }
@@ -76,20 +81,20 @@ class EncryptionAlgorithm
     end
   end
 
-  # def encrypt_message(message, keys = nil, offsets = nil)
-  #   keys = generate_keys if keys == nil
-  #   offsets = generate_offsets if offsets == nil
-  #   keys = format_keys if keys != nil
-  #   offsets = format_offsets if offsets != nil
-  #
-  #   alphabet = generate_alphabet
-  #   final_shifts = calculate_shifts(keys, offsets)
-  #   formated_message = format_message(message)
-  #   shifted_message = formated_message.map do |message_chunk|
-  #     shift_chunk(message_chunk, final_shifts, alphabet)
-  #   end
-  #   encrypted_message = shifted_message.flatten.join()
-  # end
+  def encrypt_message(message, key = nil, date = nil)
+    keys = generate_keys if key == nil
+    offsets = generate_offsets if date == nil
+    keys = format_keys(key) if key != nil
+    offsets = format_offsets(date) if date != nil
+
+    alphabet = generate_alphabet
+    final_shifts = calculate_shifts(keys, offsets)
+    formated_message = format_message(message)
+    shifted_message = formated_message.map do |message_chunk|
+      shift_chunk(message_chunk, final_shifts, alphabet)
+    end
+    encrypted_message = shifted_message.flatten.join()
+  end
 
   def generate_alphabet
     ("a".."z").to_a << " "
