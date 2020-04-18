@@ -38,4 +38,13 @@ class EncryptionAlgorithm
       d_offset: last4_digits[3]
     }
   end
+
+  # def encrypt_message(message, keys, offsets)
+  #
+  #
+  # end
+
+  def generate_alphabet
+    ("a".."z").to_a << " "
+  end
 end
