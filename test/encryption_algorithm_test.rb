@@ -75,14 +75,6 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal expected, @enigma_machine.calculate_shifts(keys, offsets)
   end
 
-  def test_decrypt_message
-
-    Date.stubs(:today).returns(Date.new(1995, 8, 4))
-
-    assert_equal "hello world", @enigma_machine.decrypt_message("keder ohulw", "02715", "040895")
-    assert_equal "hello world", @enigma_machine.decrypt_message("keder ohulw", "02715")
-  end
-
   def test_format_message
     expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
     assert_equal expected, @enigma_machine.format_message("HeLlo WorLd")
@@ -98,8 +90,9 @@ class EncryptionAlgorithmTest < MiniTest::Test
 
     assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, :encrypt)
     assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, :encrypt)
+      assert_equal ["k", "!", "d", "$"], @enigma_machine.shift_chunk(["h", "!", "l", "$"], shifts, :encrypt)
 
-    assert_equal ["h", "e", "l", "l"], @enigma_machine.shift_chunk(["k", "e", "d", "e"], shifts, :decrypt)
+    assert_equal ["*", "e", "l", "%"], @enigma_machine.shift_chunk(["*", "e", "d", "%"], shifts, :decrypt)
     assert_equal ["o", " ", "w", "o"], @enigma_machine.shift_chunk(["r", " ", "o", "h"], shifts, :decrypt)
   end
 

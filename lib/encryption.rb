@@ -20,9 +20,9 @@ class Encryption < EncryptionAlgorithm
 
   def format_encryption_return
     {
-      encryption: @message,
-      key: @encryption_key,
-      date: @date
+      encryption: message,
+      key: encryption_key,
+      date: date
     }
   end
 
