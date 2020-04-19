@@ -76,18 +76,18 @@ class EncryptionTest < MiniTest::Test
   end
 
   def test_shift_message
-    message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+    message = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
     shifts = {
       a_shift: 3,
       b_shift: 27,
       c_shift: 73,
       d_shift: 20
     }
-    expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
-    assert_equal expected, @decryptor.shift_message(message, shifts)
+    expected = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+    assert_equal expected, @encryptor.shift_message(message, shifts)
 
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
-    assert_equal expected, @decryptor_defaults.shift_message(message, shifts)
+    assert_equal expected, @encryptor_defaults.shift_message(message, shifts)
   end
 
   def test_format_encryption_return
