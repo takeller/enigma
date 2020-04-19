@@ -58,4 +58,11 @@ class EnigmaTest < MiniTest::Test
     Date.stubs(:today).returns(Date.new(2018, 10, 29))
     assert_equal expected, @enigma.crack("vjqtbeaweqihssi")
   end
+
+  def test_crack_key
+    assert_equal "08304", @enigma.crack_key("vjqtbeaweqihssi","291018")
+
+    Date.stubs(:today).returns(Date.new(2018, 10, 29))
+    assert_equal "08304", @enigma.crack_key("vjqtbeaweqihssi")
+  end
 end
