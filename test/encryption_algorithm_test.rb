@@ -90,8 +90,9 @@ class EncryptionAlgorithmTest < MiniTest::Test
 
     assert_equal ["k", "e", "d", "e"], @enigma_machine.shift_chunk(["h", "e", "l", "l"], shifts, :encrypt)
     assert_equal ["r", " ", "o", "h"], @enigma_machine.shift_chunk(["o", " ", "w", "o"], shifts, :encrypt)
+      assert_equal ["k", "!", "d", "$"], @enigma_machine.shift_chunk(["h", "!", "l", "$"], shifts, :encrypt)
 
-    assert_equal ["h", "e", "l", "l"], @enigma_machine.shift_chunk(["k", "e", "d", "e"], shifts, :decrypt)
+    assert_equal ["*", "e", "l", "%"], @enigma_machine.shift_chunk(["*", "e", "d", "%"], shifts, :decrypt)
     assert_equal ["o", " ", "w", "o"], @enigma_machine.shift_chunk(["r", " ", "o", "h"], shifts, :decrypt)
   end
 
