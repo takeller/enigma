@@ -53,17 +53,25 @@ class EncryptionTest < MiniTest::Test
       key: "02715",
       date: "040895"
     }
+    keys = {
+      a_key: [0,2],
+      b_key: [2,7],
+      c_key: [7,1],
+      d_key: [1,5]
+    }
 
     assert_equal expected, @encryptor.format_encryption_input
     assert_equal expected_attributes[:encryption], @encryptor.message
     assert_equal expected_attributes[:key], @encryptor.encryption_key
     assert_equal expected_attributes[:date], @encryptor.date
 
-
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
+
+    @encryptor_defaults.stubs(:random_number_generator).returns("2715")
     assert_equal expected, @encryptor_defaults.format_encryption_input
     assert_equal expected_attributes[:encryption], @encryptor_defaults.message
     assert_equal expected_attributes[:key], @encryptor_defaults.encryption_key
+
     assert_equal expected_attributes[:date], @encryptor_defaults.date
   end
 
