@@ -1,6 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require 'mocha/minitest'
+require './test/test_helper'
 require './lib/encryption'
 
 class EncryptionTest < MiniTest::Test
@@ -26,9 +24,6 @@ class EncryptionTest < MiniTest::Test
   end
 
   def test_encrypt_message
-    # keys a: 02, b: 27, c: 71, d: 15 || offsets a: 1, b: 0, c: 2, d: 5
-    # Final shifts -> a: 3, b: 27, c: 73, d: 20
-    # Given "hello world" expected "keder ohuluw"
     expected = {
       encryption: "keder ohulw",
       key: "02715",
@@ -37,10 +32,62 @@ class EncryptionTest < MiniTest::Test
 
     assert_equal expected, @encryptor.encrypt_message
 
-
     @encryptor_defaults.set_key([0,2,7,1,5])
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
     assert_equal expected, @encryptor_defaults.encrypt_message
+  end
+
+  def test_format_encryption_input
+    expected =
+    {
+      shifts:  {
+        a_shift: 3,
+        b_shift: 27,
+        c_shift: 73,
+        d_shift: 20
+      },
+      formated_message: [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+    }
+    expected_attributes = {
+      encryption: "hello world",
+      key: "02715",
+      date: "040895"
+    }
+    keys = {
+      a_key: [0,2],
+      b_key: [2,7],
+      c_key: [7,1],
+      d_key: [1,5]
+    }
+
+    assert_equal expected, @encryptor.format_encryption_input
+    assert_equal expected_attributes[:encryption], @encryptor.message
+    assert_equal expected_attributes[:key], @encryptor.encryption_key
+    assert_equal expected_attributes[:date], @encryptor.date
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+
+    @encryptor_defaults.stubs(:random_number_generator).returns("2715")
+    assert_equal expected, @encryptor_defaults.format_encryption_input
+    assert_equal expected_attributes[:encryption], @encryptor_defaults.message
+    assert_equal expected_attributes[:key], @encryptor_defaults.encryption_key
+
+    assert_equal expected_attributes[:date], @encryptor_defaults.date
+  end
+
+  def test_shift_message
+    message = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+    shifts = {
+      a_shift: 3,
+      b_shift: 27,
+      c_shift: 73,
+      d_shift: 20
+    }
+    expected = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+    assert_equal expected, @encryptor.shift_message(message, shifts)
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+    assert_equal expected, @encryptor_defaults.shift_message(message, shifts)
   end
 
   def test_format_encryption_return
@@ -49,13 +96,16 @@ class EncryptionTest < MiniTest::Test
       key: "02715",
       date: "040895"
     }
+    encrypted_message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
 
     @encryptor.encrypt_message
-    assert_equal expected, @encryptor.format_encryption_return
+    assert_equal expected, @encryptor.format_encryption_return(encrypted_message)
 
     @encryptor_defaults.set_key([0,2,7,1,5])
     @encryptor_defaults.encrypt_message
-    assert_equal expected, @encryptor_defaults.format_encryption_return
+    assert_equal expected, @encryptor_defaults.format_encryption_return(encrypted_message)
   end
+
+
 end

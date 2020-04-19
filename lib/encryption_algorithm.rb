@@ -51,7 +51,6 @@ class EncryptionAlgorithm
     last4_digits = []
     date_squared = (date.to_i ** 2).to_s
     date_squared[-4..-1].each_char { |digit| last4_digits << digit.to_i  }
-
     {
       a_offset: last4_digits[0],
       b_offset: last4_digits[1],
@@ -61,7 +60,6 @@ class EncryptionAlgorithm
   end
 
   def calculate_shifts(keys, offsets)
-    # a key + a offset
     {
       a_shift: keys[:a_key].join.to_i + offsets[:a_offset],
       b_shift: keys[:b_key].join.to_i + offsets[:b_offset],
@@ -70,7 +68,6 @@ class EncryptionAlgorithm
     }
   end
 
-  # Break message into chunks of 4 characters
   def format_message(message)
     chunked_message = []
     lowercase_message = message.downcase
@@ -80,18 +77,20 @@ class EncryptionAlgorithm
     chunked_message
   end
 
-  # shift the 4 letter chunk
   def shift_chunk(message_chunk, shifts, encrypt_or_decrypt)
     shifts = [shifts[:a_shift], shifts[:b_shift], shifts[:c_shift], shifts[:d_shift]]
     message_chunk.map.with_index do |char, chunk_index|
       next(char) if @alphabet.include?(char) == false
-      alphabet_index = @alphabet.index(char)
-      if encrypt_or_decrypt == :encrypt
-        new_character = @alphabet.rotate(shifts[chunk_index])[alphabet_index]
-      elsif encrypt_or_decrypt == :decrypt
-        new_character = @alphabet.rotate(-shifts[chunk_index])[alphabet_index]
-      end
-      new_character
+      shift_character(char, shifts[chunk_index], encrypt_or_decrypt)
+    end
+  end
+
+  def shift_character(char, shift, encrypt_or_decrypt)
+    alphabet_index = @alphabet.index(char)
+    if encrypt_or_decrypt == :encrypt
+      @alphabet.rotate(shift)[alphabet_index]
+    elsif encrypt_or_decrypt == :decrypt
+      @alphabet.rotate(-shift)[alphabet_index]
     end
   end
 
