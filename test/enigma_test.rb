@@ -45,9 +45,7 @@ class EnigmaTest < MiniTest::Test
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
 
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715", "040895")
-    
+
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715")
-
-
   end
 end
