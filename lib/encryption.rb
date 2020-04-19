@@ -6,8 +6,7 @@ class Encryption < EncryptionAlgorithm
   def encrypt_message
     formated_input = format_encryption_input
     encrypted_message = shift_message(formated_input[:formated_message], formated_input[:shifts])
-    @message = shifted_message.flatten.join()
-    format_encryption_return
+    format_encryption_return(encrypted_message)
   end
 
   def format_encryption_input
@@ -15,7 +14,6 @@ class Encryption < EncryptionAlgorithm
     offsets = generate_offsets if @date == nil
     keys = format_keys(@encryption_key) if @encryption_key != nil
     offsets = format_offsets(date) if @date != nil
-
     final_shifts = calculate_shifts(keys, offsets)
     formated_message = format_message(@message)
     {
@@ -30,7 +28,8 @@ class Encryption < EncryptionAlgorithm
     end
   end
 
-  def format_encryption_return
+  def format_encryption_return(encrypted_message)
+    @message = encrypted_message.flatten.join()
     {
       encryption: message,
       key: encryption_key,

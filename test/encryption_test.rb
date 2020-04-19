@@ -96,14 +96,15 @@ class EncryptionTest < MiniTest::Test
       key: "02715",
       date: "040895"
     }
+    encrypted_message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
 
     @encryptor.encrypt_message
-    assert_equal expected, @encryptor.format_encryption_return
+    assert_equal expected, @encryptor.format_encryption_return(encrypted_message)
 
     @encryptor_defaults.set_key([0,2,7,1,5])
     @encryptor_defaults.encrypt_message
-    assert_equal expected, @encryptor_defaults.format_encryption_return
+    assert_equal expected, @encryptor_defaults.format_encryption_return(encrypted_message)
   end
 
 
