@@ -47,14 +47,16 @@ class DecryptionTest < MiniTest::Test
       key: "02715",
       date: "040895"
     }
+    decrypted_message = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
 
     @decryptor.decrypt_message
-    assert_equal expected, @decryptor.format_decryption_return
+    assert_equal expected, @decryptor.format_decryption_return(decrypted_message)
 
     @decryptor_defaults.set_key([0,2,7,1,5])
     @decryptor_defaults.decrypt_message
-    assert_equal expected, @decryptor_defaults.format_decryption_return
+    assert_equal expected, @decryptor_defaults.format_decryption_return(decrypted_message)
   end
 
   def test_format_decryption_input
@@ -74,13 +76,19 @@ class DecryptionTest < MiniTest::Test
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
     assert_equal expected, @decryptor_defaults.format_decryption_input
   end
-  # 
-  # def test_shift_message
-  #   message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
-  #   expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
-  #   assert_equal expected, @decryptor.shift_message(message)
-  #
-  #   Date.stubs(:today).returns(Date.new(1995, 8, 4))
-  #   assert_equal expected, @decryptor_defaults.shift_message(message)
-  # end
+
+  def test_shift_message
+    message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+    shifts = {
+      a_shift: 3,
+      b_shift: 27,
+      c_shift: 73,
+      d_shift: 20
+    }
+    expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+    assert_equal expected, @decryptor.shift_message(message, shifts)
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+    assert_equal expected, @decryptor_defaults.shift_message(message, shifts)
+  end
 end

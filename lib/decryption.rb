@@ -2,20 +2,10 @@ require './lib/encryption_algorithm'
 
 class Decryption < EncryptionAlgorithm
 
-
   def decrypt_message
-    # offsets = generate_offsets if @date == nil
-    # offsets = format_offsets(date) if @date != nil
-    # keys = format_keys(@encryption_key)
-    #
-    # final_shifts = calculate_shifts(keys, offsets)
-    # formated_message = format_message(@message)
     formated_input = format_decryption_input
-    shifted_message = formated_input[:formated_message].map do |message_chunk|
-      shift_chunk(message_chunk, formated_input[:shifts], :decrypt)
-    end
-    @message = shifted_message.flatten.join()
-    format_decryption_return
+    decrypted_message = shift_message(formated_input[:formated_message], formated_input[:shifts])
+    format_decryption_return(decrypted_message)
   end
 
   def format_decryption_input
@@ -31,8 +21,15 @@ class Decryption < EncryptionAlgorithm
     }
   end
 
+  def shift_message(message,shifts)
+    message.map do |message_chunk|
+      shift_chunk(message_chunk, shifts, :decrypt)
+    end
+  end
 
-  def format_decryption_return
+
+  def format_decryption_return(decrypted_message)
+    @message = decrypted_message.flatten.join()
     {
       decryption: @message,
       key: @encryption_key,
