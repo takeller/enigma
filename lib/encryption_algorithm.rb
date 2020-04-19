@@ -81,20 +81,7 @@ class EncryptionAlgorithm
     shifts = [shifts[:a_shift], shifts[:b_shift], shifts[:c_shift], shifts[:d_shift]]
     message_chunk.map.with_index do |char, chunk_index|
       next(char) if @alphabet.include?(char) == false
-
-      # shift_character(char, shifts[chunk_index], encrypt_or_decrypt)
-
-
-
-
-      alphabet_index = @alphabet.index(char)
-      if encrypt_or_decrypt == :encrypt
-        new_character = @alphabet.rotate(shifts[chunk_index])[alphabet_index]
-      elsif encrypt_or_decrypt == :decrypt
-        new_character = @alphabet.rotate(-shifts[chunk_index])[alphabet_index]
-      end
-
-      new_character
+      shift_character(char, shifts[chunk_index], encrypt_or_decrypt)
     end
   end
 
