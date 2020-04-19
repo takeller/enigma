@@ -1,6 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require 'mocha/minitest'
+require './test/test_helper'
 require './lib/encryption_algorithm'
 
 class EncryptionAlgorithmTest < MiniTest::Test
@@ -120,6 +118,7 @@ class EncryptionAlgorithmTest < MiniTest::Test
   def test_convert_key_string_to_array
     expected = [0,2,7,1,5]
     assert_equal expected, @enigma_machine.convert_key_string_to_array("02715")
+    assert_equal expected, @enigma_machine.convert_key_string_to_array("2715")
   end
 
   def test_set_key

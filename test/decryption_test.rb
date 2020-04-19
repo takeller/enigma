@@ -1,6 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require 'mocha/minitest'
+require './test/test_helper'
 require './lib/decryption'
 
 class DecryptionTest < MiniTest::Test
@@ -58,4 +56,31 @@ class DecryptionTest < MiniTest::Test
     @decryptor_defaults.decrypt_message
     assert_equal expected, @decryptor_defaults.format_decryption_return
   end
+
+  def test_format_decryption_input
+    expected =
+    {
+      shifts:  {
+        a_shift: 3,
+        b_shift: 27,
+        c_shift: 73,
+        d_shift: 20
+      },
+      formated_message: [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+    }
+
+    assert_equal expected, @decryptor.format_decryption_input
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+    assert_equal expected, @decryptor_defaults.format_decryption_input
+  end
+  # 
+  # def test_shift_message
+  #   message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+  #   expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+  #   assert_equal expected, @decryptor.shift_message(message)
+  #
+  #   Date.stubs(:today).returns(Date.new(1995, 8, 4))
+  #   assert_equal expected, @decryptor_defaults.shift_message(message)
+  # end
 end
