@@ -127,4 +127,24 @@ class EncryptionAlgorithmTest < MiniTest::Test
     assert_equal "01234", enigma.encryption_key
   end
 
+  def test_shift_character
+    shifts = {
+      a_shift: 3,
+      b_shift: 27,
+      c_shift: 73,
+      d_shift: 20
+    }
+
+    assert_equal "k", @enigma_machine.shift_character("h", shifts[:a_shift], :encrypt)
+    assert_equal "e", @enigma_machine.shift_character("e", shifts[:b_shift], :encrypt)
+    assert_equal "d", @enigma_machine.shift_character("l", shifts[:c_shift], :encrypt)
+    assert_equal "e", @enigma_machine.shift_character("l", shifts[:d_shift], :encrypt)
+
+    assert_equal "o", @enigma_machine.shift_character("r", shifts[:a_shift], :decrypt)
+    assert_equal " ", @enigma_machine.shift_character(" ", shifts[:b_shift], :decrypt)
+    assert_equal "w", @enigma_machine.shift_character("o", shifts[:c_shift], :decrypt)
+    assert_equal "o", @enigma_machine.shift_character("h", shifts[:d_shift], :decrypt)
+
+  end
+
 end
