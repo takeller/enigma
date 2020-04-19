@@ -24,9 +24,6 @@ class EncryptionTest < MiniTest::Test
   end
 
   def test_encrypt_message
-    # keys a: 02, b: 27, c: 71, d: 15 || offsets a: 1, b: 0, c: 2, d: 5
-    # Final shifts -> a: 3, b: 27, c: 73, d: 20
-    # Given "hello world" expected "keder ohuluw"
     expected = {
       encryption: "keder ohulw",
       key: "02715",
@@ -35,10 +32,54 @@ class EncryptionTest < MiniTest::Test
 
     assert_equal expected, @encryptor.encrypt_message
 
-
     @encryptor_defaults.set_key([0,2,7,1,5])
     Date.stubs(:today).returns(Date.new(1995, 8, 4))
     assert_equal expected, @encryptor_defaults.encrypt_message
+  end
+
+  def test_format_encryption_input
+    expected =
+    {
+      shifts:  {
+        a_shift: 3,
+        b_shift: 27,
+        c_shift: 73,
+        d_shift: 20
+      },
+      formated_message: [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+    }
+    expected_attributes = {
+      encryption: "hello world",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @encryptor.format_encryption_input
+    assert_equal expected_attributes[:encryption], @encryptor.message
+    assert_equal expected_attributes[:key], @encryptor.encryption_key
+    assert_equal expected_attributes[:date], @encryptor.date
+
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+    assert_equal expected, @encryptor_defaults.format_encryption_input
+    assert_equal expected_attributes[:encryption], @encryptor_defaults.message
+    assert_equal expected_attributes[:key], @encryptor_defaults.encryption_key
+    assert_equal expected_attributes[:date], @encryptor_defaults.date
+  end
+
+  def test_shift_message
+    message = [["k", "e", "d", "e"], ["r", " ", "o", "h"], ["u", "l", "w"]]
+    shifts = {
+      a_shift: 3,
+      b_shift: 27,
+      c_shift: 73,
+      d_shift: 20
+    }
+    expected = [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]]
+    assert_equal expected, @decryptor.shift_message(message, shifts)
+
+    Date.stubs(:today).returns(Date.new(1995, 8, 4))
+    assert_equal expected, @decryptor_defaults.shift_message(message, shifts)
   end
 
   def test_format_encryption_return
@@ -56,4 +97,6 @@ class EncryptionTest < MiniTest::Test
     @encryptor_defaults.encrypt_message
     assert_equal expected, @encryptor_defaults.format_encryption_return
   end
+
+
 end
