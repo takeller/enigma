@@ -18,7 +18,7 @@ class CrackerTest < MiniTest::Test
     assert_equal "08304", @cracker.crack_key("vjqtbeaweqihssi")
   end
 
-  def test_format_last_four_characters
+  def test_rotate_last_four_characters
     last_four_characters1 = {
       encrypted_chars: ["h", "s", "s", "i"],
       decrypted_chars: [" ", "e", "n", "d"]
@@ -51,10 +51,16 @@ class CrackerTest < MiniTest::Test
       encrypted_chars: ["i", "h", "s", "s"],
       decrypted_chars: ["d", " ", "e", "n"]
     }
-    assert_equal expected1, @cracker.format_last_four_characters(last_four_characters1, 0)
-    assert_equal expected2, @cracker.format_last_four_characters(last_four_characters2, 3)
-    assert_equal expected3, @cracker.format_last_four_characters(last_four_characters3, 2)
-    assert_equal expected4, @cracker.format_last_four_characters(last_four_characters4, 1)
+    assert_equal expected1, @cracker.rotate_last_four_characters(last_four_characters1, 0)
+    assert_equal expected2, @cracker.rotate_last_four_characters(last_four_characters2, 3)
+    assert_equal expected3, @cracker.rotate_last_four_characters(last_four_characters3, 2)
+    assert_equal expected4, @cracker.rotate_last_four_characters(last_four_characters4, 1)
+  end
+
+  def test_find_encrypted_indices
+
+    assert_equal [7, 18, 18, 8], @cracker.find_encrypted_indices(["h", "s", "s", "i"])
+    assert_equal [18, 8, 7, 18], @cracker.find_encrypted_indices(["s", "i", "h", "s"])
   end
 
 
