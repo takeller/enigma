@@ -46,4 +46,13 @@ class Cracker < EncryptionAlgorithm
     }
   end
 
+  def find_base_shifts(encrypted_indices, decrypted_indices)
+    {
+      a: encrypted_indices[:a] - decrypted_indices[:a],
+      b: encrypted_indices[:b] - decrypted_indices[:b],
+      c: encrypted_indices[:c] - decrypted_indices[:c],
+      d: encrypted_indices[:d] - decrypted_indices[:d]
+    }
+  end
+
 end
