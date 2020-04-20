@@ -4,29 +4,46 @@ require './lib/cracker'
 class CrackerTest < MiniTest::Test
 
   def setup
-    @cracker = Cracker.new("vjqtbeaweqihssi", "291018")
-    Date.stubs(:today).returns(Date.new(2018, 10, 29))
-    @cracker_default_date = Cracker.new("vjqtbeaweqihssi")
+    @cracker = Cracker.new
   end
 
   def test_it_exists
     assert_instance_of Cracker, @cracker
-    assert_instance_of Cracker, @cracker_default_date
   end
-
-  def test_it_has_readable_attributes
-    assert_equal "vjqtbeaweqihssi", @cracker.message
-    assert_equal "vjqtbeaweqihssi", @cracker_default_date.message
-    assert_equal "291018", @cracker.date
-    assert_equal "291018", @cracker_default_date.date
-  end
-
-
 
   def test_crack_key
-    assert_equal "08304", @@cracker.crack_key("vjqtbeaweqihssi","291018")
+    assert_equal "08304", @cracker.crack_key("vjqtbeaweqihssi","291018")
 
     Date.stubs(:today).returns(Date.new(2018, 10, 29))
-    assert_equal "08304", @@cracker.crack_key("vjqtbeaweqihssi", nil)
+    assert_equal "08304", @cracker.crack_key("vjqtbeaweqihssi")
   end
+
+  def test_format_last_four_characters
+    last_four_characters = {
+      encrypted_chars: ["h", "s", "s", "i"],
+      decrypted_chars: [" ", "e", "n", "d"]
+    }
+    expected1 = {
+      encrypted_chars: ["h", "s", "s", "i"],
+      decrypted_chars: [" ", "e", "n", "d"]
+    }
+    expected2 = {
+      encrypted_chars: ["s", "s", "i", "h"],
+      decrypted_chars: ["e", "n", "d", " "]
+    }
+    expected3 = {
+      encrypted_chars: ["s", "i", "h", "s"],
+      decrypted_chars: ["n", "d", " ", "e"]
+    }
+    expected4 = {
+      encrypted_chars: ["i", "h", "s", "s"],
+      decrypted_chars: ["d", " ", "e", "n"]
+    }
+    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 0)
+    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 3)
+    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 2)
+    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 1)
+  end
+
+
 end
