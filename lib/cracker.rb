@@ -55,4 +55,15 @@ class Cracker < EncryptionAlgorithm
     }
   end
 
+  def find_possible_shifts(base_shifts)
+    possible_shifts = base_shifts.transform_values do |shift|
+      possible_shifts = []
+      until possible_shifts.length == 5
+        possible_shifts << shift
+        shift += 27
+      end
+      possible_shifts.find_all {|shift| shift >= 0 && shift.to_s.length < 3}
+    end
+  end
+
 end

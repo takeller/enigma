@@ -139,5 +139,17 @@ class CrackerTest < MiniTest::Test
     assert_equal expected2, @cracker.find_base_shifts(encrypted_indices2, decrypted_indices2)
   end
 
+  def test_find_possible_shifts
+    expected = {
+      :a=>[14, 41, 68, 95],
+      :b=>[5, 32, 59, 86],
+      :c=>[5, 32, 59, 86],
+      :d=>[8, 35, 62, 89]
+    }
+    base_shifts = {:a=>14, :b=>5, :c=>5, :d=>-19}
+
+    assert_equal expected, @cracker.find_possible_shifts(base_shifts)
+  end
+
 
 end
