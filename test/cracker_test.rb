@@ -19,7 +19,19 @@ class CrackerTest < MiniTest::Test
   end
 
   def test_format_last_four_characters
-    last_four_characters = {
+    last_four_characters1 = {
+      encrypted_chars: ["h", "s", "s", "i"],
+      decrypted_chars: [" ", "e", "n", "d"]
+    }
+    last_four_characters2 = {
+      encrypted_chars: ["h", "s", "s", "i"],
+      decrypted_chars: [" ", "e", "n", "d"]
+    }
+    last_four_characters3 = {
+      encrypted_chars: ["h", "s", "s", "i"],
+      decrypted_chars: [" ", "e", "n", "d"]
+    }
+    last_four_characters4 = {
       encrypted_chars: ["h", "s", "s", "i"],
       decrypted_chars: [" ", "e", "n", "d"]
     }
@@ -39,10 +51,10 @@ class CrackerTest < MiniTest::Test
       encrypted_chars: ["i", "h", "s", "s"],
       decrypted_chars: ["d", " ", "e", "n"]
     }
-    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 0)
-    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 3)
-    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 2)
-    assert_equal expected1, @cracker.test_format_last_four_characters(last_four_characters, 1)
+    assert_equal expected1, @cracker.format_last_four_characters(last_four_characters1, 0)
+    assert_equal expected2, @cracker.format_last_four_characters(last_four_characters2, 3)
+    assert_equal expected3, @cracker.format_last_four_characters(last_four_characters3, 2)
+    assert_equal expected4, @cracker.format_last_four_characters(last_four_characters4, 1)
   end
 
 
