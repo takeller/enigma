@@ -168,4 +168,23 @@ class CrackerTest < MiniTest::Test
     assert_equal expected, @cracker.find_possible_keys(shifts, offsets)
   end
 
+  def test_find_solution_key
+    possible_keys = {
+      :a=>["08", "35", "62", "89"],
+      :b=>["02", "29", "56", "83"],
+      :c=>["03", "30", "57", "84"],
+      :d=>["04", "31", "58", "85"]
+    }
+    assert_equal "08304", @cracker.find_solution_key(possible_keys)
+  end
+
+  def test_find_key
+    last_four_characters = {
+      encrypted_chars: ["h", "s", "s", "i"],
+      decrypted_chars: [" ", "e", "n", "d"]
+    }
+    offsets = {:a_offset=>6, :b_offset=>3, :c_offset=>2, :d_offset=>4}
+    assert_equal "08304", @cracker.find_key(last_four_characters, 3, offsets)
+  end
+
 end

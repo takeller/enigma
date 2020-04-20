@@ -8,7 +8,6 @@ class Cracker < EncryptionAlgorithm
   end
 
   def crack_key(message, date = nil)
-    # If date == nil, use todays date
     date = Date::today.strftime("%d%m%y") if date == nil
     offsets = format_offsets(date)
 
@@ -17,8 +16,17 @@ class Cracker < EncryptionAlgorithm
       encrypted_chars: message[-4..-1].split(""),
       decrypted_chars: [" ", "e", "n", "d"]
     }
-    last_four_characters_rotated = rotate_last_four_characters(last_four_characters, last_chunk_length)
+    find_key(last_four_characters, last_chunk_length, offsets)
+  end
 
+  def find_key(last_four_characters, last_chunk_length, offsets)
+    last_four_characters_rotated = rotate_last_four_characters(last_four_characters, last_chunk_length)
+    encrypted_indices = find_encrypted_indices(last_four_characters_rotated[:encrypted_chars])
+    decrypted_indices = find_decrypted_indices(last_four_characters_rotated[:decrypted_chars])
+    base_shifts = find_base_shifts(encrypted_indices, decrypted_indices)
+    possible_shifts = find_possible_shifts(base_shifts)
+    possible_keys = find_possible_keys(possible_shifts, offsets)
+    find_solution_key(possible_keys)
   end
 
   def rotate_last_four_characters(characters, last_chunk_length)
@@ -75,6 +83,21 @@ class Cracker < EncryptionAlgorithm
       end
       [letter, keys]
     end.to_h
+  end
+
+  def find_solution_key(possible_keys)
+    solution_key = nil
+    possible_keys[:a].each do |a_key|
+      b_key = possible_keys[:b].find { |b_key| a_key[1] == b_key[0] }
+      next if b_key == nil
+      c_key = possible_keys[:c].find { |c_key| b_key[1] == c_key[0] }
+      next if c_key == nil
+      d_key = possible_keys[:d].find { |d_key| c_key[1] == d_key[0] }
+      if d_key != nil
+        solution_key = a_key + b_key[1] + c_key[1] + d_key[1]
+      end
+    end
+    solution_key
   end
 
 end
