@@ -7,7 +7,7 @@ class Cracker < EncryptionAlgorithm
     super(alphabet)
   end
 
-  def crack_key(message, date = nil)
+  def crack_key(message, date)
     date = Date::today.strftime("%d%m%y") if date == nil
     offsets = format_offsets(date)
 

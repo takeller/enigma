@@ -15,7 +15,7 @@ class CrackerTest < MiniTest::Test
     assert_equal "08304", @cracker.crack_key("vjqtbeaweqihssi","291018")
 
     Date.stubs(:today).returns(Date.new(2018, 10, 29))
-    assert_equal "08304", @cracker.crack_key("vjqtbeaweqihssi")
+    assert_equal "08304", @cracker.crack_key("vjqtbeaweqihssi", nil)
   end
 
   def test_it_has_an_alphabet

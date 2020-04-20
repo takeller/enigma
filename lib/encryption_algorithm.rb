@@ -50,6 +50,7 @@ class EncryptionAlgorithm
   def format_offsets(date)
     last4_digits = []
     date_squared = (date.to_i ** 2).to_s
+    # try .split("")
     date_squared[-4..-1].each_char { |digit| last4_digits << digit.to_i  }
     {
       a_offset: last4_digits[0],
