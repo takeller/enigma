@@ -10,7 +10,6 @@ class Cracker < EncryptionAlgorithm
   def crack_key(message, date)
     date = Date::today.strftime("%d%m%y") if date == nil
     offsets = format_offsets(date)
-
     last_chunk_length = message.length % 4
     last_four_characters = {
       encrypted_chars: message[-4..-1].split(""),
@@ -70,7 +69,7 @@ class Cracker < EncryptionAlgorithm
         possible_shifts << shift
         shift += 27
       end
-      possible_shifts.find_all {|shift| shift >= 0 && shift.to_s.length < 3}
+      possible_shifts
     end
   end
 
@@ -79,8 +78,10 @@ class Cracker < EncryptionAlgorithm
       keys = shifts.map do |shift|
         key = (shift - offsets[(letter.to_s + "_offset").to_sym]).to_s
         key = "0" + key if key.length == 1
+        key = nil if key.include?("-") || key.length > 2
         key
       end
+      keys.delete(nil)
       [letter, keys]
     end.to_h
   end
@@ -88,16 +89,20 @@ class Cracker < EncryptionAlgorithm
   def find_solution_key(possible_keys)
     solution_key = nil
     possible_keys[:a].each do |a_key|
-      b_key = possible_keys[:b].find { |b_key| a_key[1] == b_key[0] }
-      next if b_key == nil
-      c_key = possible_keys[:c].find { |c_key| b_key[1] == c_key[0] }
-      next if c_key == nil
-      d_key = possible_keys[:d].find { |d_key| c_key[1] == d_key[0] }
-      if d_key != nil
-        solution_key = a_key + b_key[1] + c_key[1] + d_key[1]
-      end
+      solution_key = build_key(possible_keys, a_key)
+      break if solution_key != nil
     end
     solution_key
   end
 
+  def build_key(possible_keys, a_key)
+    b_key = possible_keys[:b].find { |b_key| a_key[1] == b_key[0] }
+    return nil if b_key == nil
+    c_key = possible_keys[:c].find { |c_key| b_key[1] == c_key[0] }
+    return nil if c_key == nil
+    d_key = possible_keys[:d].find { |d_key| c_key[1] == d_key[0] }
+    if d_key != nil
+      a_key + b_key[1] + c_key[1] + d_key[1]
+    end
+  end
 end
