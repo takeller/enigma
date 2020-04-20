@@ -2,7 +2,9 @@ require './lib/encryption_algorithm'
 
 class Cracker < EncryptionAlgorithm
 
+  attr_reader :alphabet
   def initialize
+    super(alphabet)
   end
 
   def crack_key(message, date = nil)
@@ -24,6 +26,24 @@ class Cracker < EncryptionAlgorithm
     characters[:encrypted_chars] = characters[:encrypted_chars].rotate(rotation_amount)
     characters[:decrypted_chars] = characters[:decrypted_chars].rotate(rotation_amount)
     characters
+  end
+
+  def find_encrypted_indices(encrypted_chars)
+    {
+      a: @alphabet.index(encrypted_chars[0]),
+      b: @alphabet.index(encrypted_chars[1]),
+      c: @alphabet.index(encrypted_chars[2]),
+      d: @alphabet.index(encrypted_chars[3])
+    }
+  end
+
+  def find_decrypted_indices(decrypted_chars)
+    {
+      a: @alphabet.index(decrypted_chars[0]),
+      b: @alphabet.index(decrypted_chars[1]),
+      c: @alphabet.index(decrypted_chars[2]),
+      d: @alphabet.index(decrypted_chars[3])
+    }
   end
 
 end
