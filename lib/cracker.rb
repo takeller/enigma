@@ -66,4 +66,15 @@ class Cracker < EncryptionAlgorithm
     end
   end
 
+  def find_possible_keys(possible_shifts, offsets)
+    possible_shifts.map do |letter, shifts|
+      keys = shifts.map do |shift|
+        key = (shift - offsets[(letter.to_s + "_offset").to_sym]).to_s
+        key = "0" + key if key.length == 1
+        key
+      end
+      [letter, keys]
+    end.to_h
+  end
+
 end

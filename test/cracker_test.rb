@@ -151,5 +151,21 @@ class CrackerTest < MiniTest::Test
     assert_equal expected, @cracker.find_possible_shifts(base_shifts)
   end
 
+  def test_find_possible_keys
+    expected = {
+      :a=>["08", "35", "62", "89"],
+      :b=>["02", "29", "56", "83"],
+      :c=>["03", "30", "57", "84"],
+      :d=>["04", "31", "58", "85"]
+    }
+    offsets = {:a_offset=>6, :b_offset=>3, :c_offset=>2, :d_offset=>4}
+    shifts = {
+      :a=>[14, 41, 68, 95],
+      :b=>[5, 32, 59, 86],
+      :c=>[5, 32, 59, 86],
+      :d=>[8, 35, 62, 89]
+    }
+    assert_equal expected, @cracker.find_possible_keys(shifts, offsets)
+  end
 
 end
