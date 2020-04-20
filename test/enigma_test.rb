@@ -46,4 +46,16 @@ class EnigmaTest < MiniTest::Test
 
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715")
   end
+
+  def test_it_can_crack_a_cipher
+    expected = {
+      decryption: "hello world end",
+      date: "291018",
+      key: "08304"
+    }
+    assert_equal expected, @@cracker.crack("vjqtbeaweqihssi", "291018")
+
+    Date.stubs(:today).returns(Date.new(2018, 10, 29))
+    assert_equal expected, @@cracker.crack("vjqtbeaweqihssi")
+  end
 end
