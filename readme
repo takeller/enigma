@@ -1,0 +1,23 @@
+Funtionality: 4
+  - Enigma can encrypt and decrypt messages
+  - Enigma can crack a cipher
+
+OOP: 4
+  - Used Inheritance
+  - Encapsulated components
+
+Conventions: 4
+  - Proper indentation and syntax
+  - Methods 10 lines or less
+  - Used enumerables effectively
+  - Some lines are somewhat long (Long variable names), so this may lower the score
+
+TDD: 3
+  - Used stubs (Todays date)
+  - 100% coverage
+  - Not sure that I properly tested inherited methods
+
+Version Control: 3
+  - 40+ commits
+  - Pull requests of related functionality
+  - May be a couple commits that are not documented well enough or include to much functionality
